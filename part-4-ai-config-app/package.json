@@ -1,0 +1,25 @@
+{
+  "name": "ld-ai-config-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@launchdarkly/node-server-sdk": "^9.10.8",
+    "@launchdarkly/server-sdk-ai": "^0.16.4",
+    "dotenv": "^17.3.1",
+    "openai": "^6.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

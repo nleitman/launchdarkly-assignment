@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LaunchDarkly SE Demo</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+          sans-serif;
+        margin: 24px;
+        max-width: 920px;
+      }
+      .row {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 16px;
+        margin-top: 16px;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        opacity: 0.8;
+        margin-top: 10px;
+      }
+      input,
+      select {
+        padding: 8px;
+        width: 260px;
+      }
+      button {
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: 1px solid #aaa;
+        background: #fff;
+        cursor: pointer;
+      }
+      button.primary {
+        border-color: #444;
+        font-weight: 600;
+      }
+      .pill {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid #ddd;
+        font-size: 12px;
+      }
+      .banner {
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        margin-top: 10px;
+      }
+      .muted {
+        opacity: 0.8;
+      }
+      pre {
+        background: #f7f7f7;
+        padding: 12px;
+        border-radius: 10px;
+        overflow-x: auto;
+      }
+    </style>
+
+    <!-- LaunchDarkly JS client-side SDK (CDN).
+         If your org prefers pinning versions, swap to a fixed version URL. -->
+    <script src="https://unpkg.com/launchdarkly-js-client-sdk@3"></script>
+  </head>
+
+  <body>
+    <h1>LaunchDarkly SE Demo</h1>
+    <p class="muted">
+      Demonstrates: instant releases/rollbacks (listener), targeting by context,
+      and a remediation trigger (kill switch).
+    </p>
+
+    <div class="card">
+      <h2>1) Build a Context (for targeting)</h2>
+      <div class="row">
+        <div>
+          <label>User Key</label>
+          <input id="userKey" value="user-123" />
+        </div>
+
+        <div>
+          <label>Email</label>
+          <input id="email" value="test@abc.com" />
+        </div>
+
+        <div>
+          <label>Plan</label>
+          <select id="plan">
+            <option value="free" selected>free</option>
+            <option value="pro">pro</option>
+            <option value="enterprise">enterprise</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Region</label>
+          <select id="region">
+            <option value="us-east" selected>us-east</option>
+            <option value="us-west">us-west</option>
+            <option value="eu">eu</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Internal User?</label>
+          <select id="internal">
+            <option value="false" selected>false</option>
+            <option value="true">true</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top: 14px" class="row">
+        <button id="connectBtn" class="primary">Connect to LaunchDarkly</button>
+        <span id="status" class="pill">Not connected</span>
+      </div>
+
+      <p class="muted" style="margin-top: 10px">
+        Use these attributes in the LaunchDarkly UI for individual targeting and
+        rule-based targeting.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>2) Feature: New Pricing Banner</h2>
+      <p class="muted">
+        The banner below is controlled by a boolean flag.
+        <strong>It updates instantly</strong> when you toggle the flag in
+        LaunchDarkly (no page reload).
+      </p>
+
+      <div id="flagState" class="pill">Flag state: unknown</div>
+      <div id="bannerContainer"></div>
+
+      <div style="margin-top: 14px" class="row">
+        <button id="killSwitchBtn">Remediate: Kill Switch (server)</button>
+        <button id="showCurlBtn">Show curl command</button>
+      </div>
+
+      <div id="curlBox" style="display: none; margin-top: 12px">
+        <div class="muted">Run this from a terminal:</div>
+        <pre>curl -X POST http://localhost:3000/api/kill-switch</pre>
+      </div>
+
+      <div id="killSwitchResult" class="muted" style="margin-top: 12px"></div>
+    </div>
+
+    <div class="card">
+      <h2>3) Notes for your demo</h2>
+      <ul>
+        <li>
+          Toggle the flag on/off in LaunchDarkly to show instant release/rollback.
+        </li>
+        <li>
+          Set individual targeting to your email, and rule-based targeting to plan
+          or region.
+        </li>
+        <li>
+          Click the kill switch button (or curl) to simulate remediation during an
+          incident.
+        </li>
+      </ul>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

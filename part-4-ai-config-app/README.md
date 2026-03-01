@@ -116,9 +116,20 @@ The model returns matching products formatted as:
 
 ---
 
-## Logging and Output
+## Output Explanation
 
 <img src="./images/AI_Configs_Output.png" width="75%">
+
+
+Running the command `npm run dev -- "I want a fitness tracker"` triggers a full end-to-end flow that demonstrates how LaunchDarkly AI Config dynamically controls model configuration and prompt templates without requiring any code changes. The first message in the terminal confirms a successful connection to LaunchDarkly: `info: [LaunchDarkly] Opened LaunchDarkly stream connection`. This verifies that the SDK key is valid and that the application is actively streaming configuration from LaunchDarkly rather than relying on hardcoded values.
+
+The next portion of the output shows a payload preview, which represents the exact request body being sent to OpenAI. This includes the selected model (`gpt-4o-mini`), temperature (`0.2`), max token limit (`200`), and the structured message array containing system, assistant, and user roles. The system message defines the high-level behavior of the model as an e-commerce shopping assistant. The assistant message contains the dynamic prompt template stored in LaunchDarkly, including placeholders such as `{{preferences}}`, `{{productsAvailable}}`, and `{{ldctx.name}}`. These placeholders are programmatically hydrated by the application before the request is sent to OpenAI. The user message contains the CLI input (`"I want a fitness tracker"`), which becomes the final user query in the conversation.
+
+Following the payload preview, the terminal prints the raw LaunchDarkly configuration (`LD config raw`). This confirms which provider is being used (`OpenAI`), which variation of the AI Config is active (`variation-1`), that the configuration is enabled, and which model is selected. Because the model name and prompt template are returned directly from LaunchDarkly, they can be modified in the LaunchDarkly UI without redeploying the application. This demonstrates externalized prompt management and dynamic model control.
+
+Finally, the model response is displayed. The response follows the structured output format defined in the AI Config template, returning matched products in the required `[productName, productId]` format. This confirms that the prompt instructions were successfully applied, that the template variables were properly hydrated, and that OpenAI generated a response consistent with the configured behavior.
+
+Overall, this execution proves that model selection, temperature, prompt structure, and output formatting are centrally managed in LaunchDarkly AI Config, dynamically injected at runtime, and safely executed through OpenAI. This enables controlled experimentation, prompt iteration, and model updates without modifying or redeploying application code.
 
 ---
 
@@ -139,15 +150,24 @@ npm install
 
 ### Configure Environment Variables
 
-```
+Copy the example file:
+
+~~~
 cp .env.example .env
-```
+~~~
 
-Update `.env` with:
+Update `.env` with the following values:
 
-- SDK key
-- AI Config key
-- Open AI key
+- `OPENAI_API_KEY` – Your OpenAI API key (used to generate model responses).
+- `LAUNCHDARKLY_SDK_KEY` – Server-side SDK key from LaunchDarkly (Environment settings).
+- `LD_AI_CONFIG_FLAG_KEY` – The key of the AI Config flag created in LaunchDarkly.
+
+These variables enable:
+
+- Retrieval of the AI Config (model + prompt template) from LaunchDarkly.
+- Dynamic model configuration without redeploying code.
+- Secure server-side execution of OpenAI requests.
+
 ---
 
 ## Run the App

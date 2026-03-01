@@ -14,30 +14,27 @@ ld-assignment/
 
   part-1-3/
     README.md
-    images/
-
-  part-3-simulation/
-    simulate.js
     server.js
     package.json
     package-lock.json
+    images/
     node_modules/
     public/
+    part-3-simulation/
+      simulate.js
 
   part-4-ai-config-app/
     README.md
     package.json
     package-lock.json
     tsconfig.json
-
+    images/
+    node_modules/
     src/
       index.ts
       shoppingAssistant.ts
-
     data/
     config/
-    images/
-    node_modules/
 ~~~
 
 ---

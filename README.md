@@ -10,13 +10,34 @@ The project is organized by section of the assignment to keep implementation det
 
 ~~~
 ld-assignment/
+  README.md
+
   part-1-3/
     README.md
-    server.js
     images/
-    part-3-simulation/
+
+  part-3-simulation/
+    simulate.js
+    server.js
+    package.json
+    package-lock.json
+    node_modules/
+    public/
+
   part-4-ai-config-app/
     README.md
+    package.json
+    package-lock.json
+    tsconfig.json
+
+    src/
+      index.ts
+      shoppingAssistant.ts
+
+    data/
+    config/
+    images/
+    node_modules/
 ~~~
 
 ---
